@@ -3,381 +3,728 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CodeStart — школа программирования</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10091f">
+<meta name="description" content="CodeStart — интерактивная школа программирования для начинающих.">
+<title>CodeStart — твой путь в код</title>
+
 <style>
-/* Основной дизайн сайта */
 :root {
-  --blue: #5275f5;
-  --ink: #202945;
-  --muted: #748099;
-  --bg: #f4f6fc;
-  --line: #e5e9f2;
+  --bg: #0b0714;
+  --panel: #151025;
+  --panel2: #1d1533;
+  --purple: #8b5cf6;
+  --pink: #d946ef;
+  --text: #f7f3ff;
+  --muted: #aaa0c2;
+  --border: rgba(177, 132, 255, .18);
+  --green: #54f0ad;
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--ink);
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(124,58,237,.22), transparent 38%),
+    radial-gradient(ellipse at 95% 35%, rgba(217,70,239,.10), transparent 32%),
+    var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
 }
-button, textarea, input { font: inherit; }
+button, input, textarea { font: inherit; }
 button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+button:focus-visible, a:focus-visible, textarea:focus-visible {
+  outline: 2px solid #d8b4fe;
+  outline-offset: 3px;
+}
+.wrap { width: min(1120px, 92%); margin: auto; }
 header {
-  background: white;
-  border-bottom: 1px solid var(--line);
-  padding: 17px 5%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(11,7,20,.82);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+.nav {
+  min-height: 72px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-.logo { font-size: 23px; font-weight: 900; }
-.logo span { color: var(--blue); }
-.pill { color: var(--blue); background: #edf1ff; padding: 7px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; }
-.hero {
-  max-width: 1050px;
-  margin: 22px auto;
-  padding: 35px;
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-}
-.hero h1 { font-size: clamp(30px, 5vw, 48px); letter-spacing: -1.5px; margin: 17px 0 10px; }
-.hero h1 span { color: var(--blue); }
-p { line-height: 1.65; }
-.hero p, .muted { color: var(--muted); }
-.progress-row { display:flex; justify-content:space-between; gap:10px; font-size:13px; margin-top:22px; }
-.track { height:7px; background:#e9edf7; border-radius:10px; margin-top:9px; overflow:hidden; }
-#progressBar { height:100%; width:0; background:var(--blue); transition:width .2s; }
-.layout {
-  max-width: 1050px;
-  margin: 20px auto;
-  display: grid;
-  grid-template-columns: 235px minmax(0,1fr);
+  justify-content: space-between;
   gap: 18px;
-  align-items: start;
 }
-.panel { background:white; border:1px solid var(--line); border-radius:17px; padding:21px; min-width:0; }
-.label { color:#8993a8; font-size:10px; letter-spacing:1.3px; font-weight:800; margin:0 0 12px; }
-.lesson-link, .project-link {
-  display:block; width:100%; text-align:left; padding:12px 10px;
-  margin:4px 0; border:0; border-radius:9px;
-  background:transparent; color:#596780; font-size:13px;
+.logo { display: flex; align-items: center; gap: 10px; font-size: 21px; font-weight: 900; letter-spacing: -.6px; }
+.logo-icon {
+  display: grid; place-items: center; width: 38px; height: 38px;
+  border-radius: 13px; color: white; font-weight: 900;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  box-shadow: 0 0 28px rgba(139,92,246,.4);
 }
-.lesson-link.active { background:#edf1ff; color:#315ce0; font-weight:700; }
-.lesson-link.done { color:#16855a; }
-.project-link { border:1px solid var(--line); }
-h2 { font-size:27px; margin:18px 0 10px; letter-spacing:-.6px; }
-h3 { font-size:16px; margin:25px 0 10px; }
-.lesson-head { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-.explain { padding:15px; margin:19px 0; border-radius:10px; background:#f0f4ff; border-left:3px solid var(--blue); font-size:14px; line-height:1.65; }
-.explain p { margin-bottom:0; color:#56647e; }
-.editor { background:#121a2b; border-radius:12px; overflow:hidden; }
-.editor-head { display:flex; justify-content:space-between; padding:12px; color:#dce5f7; font-size:12px; border-bottom:1px solid #2a354a; }
-textarea {
-  display:block; width:100%; min-height:190px; resize:vertical;
-  border:0; outline:0; padding:16px;
-  background:#121a2b; color:#dce5f7;
-  font:13px/1.7 ui-monospace, monospace;
+.logo span:last-child { color: #c4a5fd; }
+.nav-links { display: flex; align-items: center; gap: 22px; color: var(--muted); font-size: 14px; }
+.nav-links a:hover { color: white; }
+.btn {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 11px 16px;
+  color: white;
+  background: var(--panel2);
+  font-weight: 750;
+  transition: transform .18s, filter .18s, border-color .18s;
 }
-.actions { display:flex; flex-wrap:wrap; gap:8px; padding:12px; border-top:1px solid #2a354a; }
-.btn { border:0; border-radius:9px; padding:11px 14px; font-size:12px; font-weight:700; }
-.primary { background:var(--blue); color:white; }
-.secondary { background:#edf1f8; color:#465570; }
-.dark { background:#2b3850; color:white; }
-#preview { display:block; width:100%; height:190px; border:1px solid var(--line); border-radius:10px; background:white; }
-.hint { background:#fff5df; color:#78521b; padding:12px; border-radius:9px; font-size:13px; margin-top:10px; }
-.hidden { display:none !important; }
-.footer-actions { display:flex; gap:7px; flex-wrap:wrap; justify-content:space-between; margin-top:17px; }
-.assistant { border-top:1px solid var(--line); margin-top:28px; padding-top:20px; }
-.assistant-title { font-weight:800; }
-.assistant-title span { color:var(--blue); }
-#chat { display:flex; flex-direction:column; gap:8px; margin:14px 0; }
-.bubble { background:#f0f3fa; padding:12px; border-radius:10px; font-size:13px; line-height:1.6; overflow-wrap:anywhere; }
-.bubble.user { align-self:flex-end; background:#e6edff; }
-#chatForm { display:flex; gap:7px; }
-#question { min-width:0; flex:1; border:1px solid var(--line); padding:12px; border-radius:9px; }
-.small { font-size:11px; color:var(--muted); line-height:1.5; }
-.step { padding:15px; border:1px solid var(--line); border-radius:11px; margin:12px 0; }
-.step p { font-size:13px; color:var(--muted); }
-.step pre { white-space:pre-wrap; overflow-wrap:anywhere; background:#121a2b; color:#dce5f7; padding:12px; border-radius:8px; font-size:12px; }
-footer { text-align:center; padding:25px; color:var(--muted); font-size:12px; }
-@media(max-width:720px) {
-  .hero { margin:12px; padding:23px; }
-  .layout { display:flex; flex-direction:column; margin:12px; }
-  .sidebar, .content { width:100%; padding:17px; }
-  .lesson-link { width:auto; display:inline-block; }
-  .lesson-footer { justify-content:flex-start; }
-  h2 { font-size:24px; }
+.btn:hover { transform: translateY(-2px); filter: brightness(1.15); border-color: #a78bfa; }
+.btn-primary {
+  border: 0;
+  background: linear-gradient(110deg, #7c3aed, #c026d3);
+  box-shadow: 0 8px 28px rgba(139,92,246,.25);
+}
+.btn-small { padding: 8px 12px; font-size: 13px; }
+.hero { padding: 78px 0 60px; }
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border); border-radius: 99px;
+  padding: 7px 12px; color: #d8b4fe; background: rgba(139,92,246,.09);
+  font-size: 12px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase;
+}
+.pulse { width: 7px; height: 7px; background: var(--green); border-radius: 50%; box-shadow: 0 0 12px var(--green); }
+h1 { font-size: clamp(40px, 6.5vw, 70px); line-height: 1.04; letter-spacing: -2.8px; margin: 22px 0; }
+.gradient-text {
+  color: #c4b5fd;
+  background: linear-gradient(90deg, #c4b5fd, #e879f9, #a78bfa);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero p { color: var(--muted); max-width: 550px; font-size: 17px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.stats { display: flex; flex-wrap: wrap; gap: 25px; margin-top: 32px; }
+.stat strong { display: block; font-size: 22px; }
+.stat span { color: var(--muted); font-size: 12px; }
+.preview {
+  padding: 19px; border-radius: 24px; border: 1px solid rgba(196,181,253,.25);
+  background: linear-gradient(145deg, rgba(38,25,64,.94), rgba(18,12,31,.96));
+  box-shadow: 0 25px 90px rgba(99,45,180,.20);
+  transform: rotate(1deg);
+}
+.window-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: #a78bfa; }
+.window-label { color: var(--muted); font-size: 11px; }
+.fake-code { padding: 22px 4px 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; line-height: 2; overflow-wrap: anywhere; }
+.code-purple { color: #c4b5fd; }
+.code-pink { color: #f0abfc; }
+.code-green { color: #86efac; }
+.code-yellow { color: #fde68a; }
+.preview-result {
+  margin-top: 12px; padding: 16px; border-radius: 15px;
+  background: rgba(139,92,246,.11); border: 1px solid var(--border);
+}
+.preview-result strong { font-size: 19px; }
+.preview-result p { font-size: 12px; margin: 5px 0 0; }
+section { padding: 48px 0; }
+.section-heading { margin-bottom: 25px; }
+.section-heading h2 { font-size: clamp(27px, 4vw, 39px); letter-spacing: -1px; margin: 8px 0; }
+.section-heading p { color: var(--muted); margin: 0; }
+.kicker { color: #c4b5fd; font-size: 12px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card {
+  padding: 22px; border: 1px solid var(--border); border-radius: 19px;
+  background: linear-gradient(145deg, rgba(29,21,51,.94), rgba(18,13,31,.92));
+  transition: transform .2s, border-color .2s;
+}
+.card:hover { transform: translateY(-4px); border-color: rgba(196,181,253,.55); }
+.card-icon {
+  width: 45px; height: 45px; display: grid; place-items: center;
+  border-radius: 14px; font-size: 21px; margin-bottom: 15px;
+  background: rgba(139,92,246,.16); border: 1px solid var(--border);
+}
+.card h3 { margin: 5px 0 8px; }
+.card p { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+.tag { display: inline-block; color: #d8b4fe; font-size: 11px; background: rgba(139,92,246,.12); padding: 4px 9px; border-radius: 99px; }
+.lesson-layout { display: grid; grid-template-columns: 270px 1fr; gap: 18px; align-items: start; }
+.lesson-list, .lesson-content, .editor-box, .help-box {
+  border: 1px solid var(--border); border-radius: 19px; background: rgba(21,16,37,.92);
+}
+.lesson-list { padding: 10px; }
+.lesson-list-title { padding: 10px 11px; font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .7px; }
+.lesson-choice {
+  display: flex; align-items: center; gap: 11px; width: 100%; text-align: left;
+  padding: 12px; margin: 3px 0; border-radius: 12px; color: var(--muted);
+  border: 1px solid transparent; background: transparent;
+}
+.lesson-choice:hover { color: white; background: rgba(139,92,246,.08); }
+.lesson-choice.active { color: white; background: rgba(139,92,246,.17); border-color: rgba(167,139,250,.28); }
+.lesson-number { display: grid; place-items: center; flex: 0 0 31px; height: 31px; border-radius: 10px; background: #25183f; color: #c4b5fd; font-size: 12px; font-weight: 900; }
+.lesson-choice.done .lesson-number { background: rgba(84,240,173,.13); color: var(--green); }
+.lesson-content { padding: 25px; min-width: 0; }
+.lesson-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.lesson-content h3 { margin: 9px 0; font-size: 25px; }
+.lesson-content p, .lesson-content li { color: var(--muted); }
+.lesson-content ul { padding-left: 20px; }
+.tip { padding: 14px; margin: 18px 0; border-radius: 13px; border: 1px solid rgba(167,139,250,.2); background: rgba(139,92,246,.09); color: #e9ddff; font-size: 14px; }
+.lesson-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+.progress-wrap { margin: 14px 0 20px; }
+.progress-label { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; margin-bottom: 7px; }
+.progress-track { height: 7px; border-radius: 99px; overflow: hidden; background: #2a203e; }
+.progress-bar { height: 100%; width: 0; background: linear-gradient(90deg, #8b5cf6, #e879f9); transition: width .3s; }
+.editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.editor-box { overflow: hidden; min-width: 0; }
+.editor-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--border); color: #d8b4fe; font-size: 12px; font-weight: 800; }
+#codeEditor {
+  display: block; width: 100%; min-height: 255px; resize: vertical;
+  padding: 15px; color: #e9d5ff; background: #100b1d; border: 0;
+  outline: none; font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace;
+  tab-size: 2;
+}
+#codeEditor:focus { box-shadow: inset 0 0 0 1px #8b5cf6; }
+#previewFrame { display: block; width: 100%; height: 255px; border: 0; background: white; }
+.editor-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 12px; border-top: 1px solid var(--border); }
+.editor-note { color: var(--muted); font-size: 11px; }
+.status { color: var(--green); font-size: 12px; }
+.projects { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.project-card { padding: 20px; border-radius: 18px; border: 1px solid var(--border); background: var(--panel); }
+.project-card .emoji { font-size: 27px; }
+.project-card h3 { margin: 9px 0 4px; }
+.project-card p { color: var(--muted); font-size: 14px; }
+.help-box { padding: 24px; }
+.chat-messages { min-height: 60px; max-height: 220px; overflow: auto; display: flex; flex-direction: column; gap: 9px; margin: 15px 0; }
+.chat-msg { max-width: 95%; width: fit-content; padding: 10px 13px; border-radius: 12px; background: #25183f; font-size: 14px; overflow-wrap: anywhere; }
+.chat-msg.user { align-self: flex-end; background: #6033a7; }
+.chat-form { display: flex; gap: 9px; }
+.chat-form input { flex: 1; min-width: 0; padding: 12px; color: white; border: 1px solid var(--border); border-radius: 12px; background: #100b1d; }
+footer { margin-top: 50px; padding: 28px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 20px);
+  z-index: 30; padding: 12px 18px; border: 1px solid var(--border); border-radius: 13px;
+  background: #211535; box-shadow: 0 12px 40px #0008; opacity: 0; pointer-events: none;
+  transition: .2s; max-width: 90%; text-align: center; font-size: 14px;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (max-width: 760px) {
+  .nav { min-height: 64px; }
+  .nav-links { gap: 12px; font-size: 12px; }
+  .nav-links a:nth-child(2) { display: none; }
+  .nav .btn { padding: 8px 10px; font-size: 12px; }
+  .hero { padding: 48px 0 35px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .preview { transform: none; }
+  .cards, .projects { grid-template-columns: 1fr; }
+  .lesson-layout { grid-template-columns: 1fr; }
+  .lesson-list { display: grid; grid-template-columns: 1fr 1fr; }
+  .lesson-list-title { grid-column: 1 / -1; }
+  .lesson-choice { padding: 9px 7px; font-size: 12px; }
+  .lesson-content { padding: 18px; }
+  .editor-grid { grid-template-columns: 1fr; }
+  .stats { gap: 18px; }
+  h1 { letter-spacing: -1.8px; }
+}
+@media (max-width: 390px) {
+  .nav-links a:first-child { display: none; }
+  .lesson-list { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
 </style>
 </head>
+
 <body>
 <header>
-  <div class="logo">Code<span>Start</span> 🚀</div>
-  <span class="pill">УЧИСЬ СОЗДАВАТЬ</span>
+  <div class="wrap nav">
+    <a class="logo" href="#home" aria-label="CodeStart — главная">
+      <span class="logo-icon">&lt;/&gt;</span>
+      <span>Code<span>Start</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Главная навигация">
+      <a href="#lessons">Уроки</a>
+      <a href="#projects">Проекты</a>
+      <a href="#helper">Помощник</a>
+    </nav>
+    <button class="btn btn-primary btn-small" id="navStart">Начать учиться ↗</button>
+  </div>
 </header>
 
-<section class="hero">
-  <span class="pill">ТВОЙ ПУТЬ В IT</span>
-  <h1>От нуля до <span>своего сайта.</span></h1>
-  <p>Простые уроки, практика и первые проекты. Учись в своём темпе — даже с телефона.</p>
-  <div class="progress-row">
-    <span>Твой прогресс</span><b id="progressText">0 из 6 уроков</b>
-  </div>
-  <div class="track"><div id="progressBar"></div></div>
-</section>
-
-<main class="layout">
-  <aside class="panel sidebar">
-    <p class="label">УРОКИ ПО ПОРЯДКУ</p>
-    <div id="lessonList"></div>
-    <p class="label" style="margin-top:25px">МИНИ-ПРОЕКТЫ</p>
-    <button class="project-link" onclick="openProject(0)">🧮 Калькулятор</button>
-    <button class="project-link" onclick="openProject(1)">✅ Список дел</button>
-    <button class="project-link" onclick="openProject(2)">🎯 Угадай число</button>
-  </aside>
-
-  <section class="panel content">
-    <div id="lessonView">
-      <div class="lesson-head">
-        <span class="pill" id="lessonTag"></span>
-        <span class="muted">Урок для новичка</span>
-      </div>
-      <h2 id="lessonTitle"></h2>
-      <p id="lessonDesc"></p>
-      <div class="explain">
-        <b>Объясняю на пальцах 👇</b>
-        <p id="lessonAnalogy"></p>
-      </div>
-      <h3>Теперь твоя очередь</h3>
-      <p class="muted">Меняй код, нажимай «Запустить» и смотри, что изменилось.</p>
-      <div class="editor">
-        <div class="editor-head"><span>● index.html</span><button class="btn dark" onclick="resetCode()">Сбросить код</button></div>
-        <textarea id="code" spellcheck="false" autocapitalize="off" aria-label="Твой код"></textarea>
-        <div class="actions">
-          <button class="btn primary" onclick="runCode()">▶ Запустить</button>
-          <button class="btn dark" onclick="showHint()">💡 Подсказка</button>
+<main>
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span> Твоя точка старта</div>
+        <h1>Из нуля —<br>в <span class="gradient-text">создателя</span><br>сайтов.</h1>
+        <p>Освой программирование с нуля. Пиши настоящий код, запускай его прямо здесь и собирай свои первые проекты — шаг за шагом.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="heroStart">Начать обучение →</button>
+          <button class="btn" id="heroProjects">Посмотреть проекты</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>03</strong><span>языка и технологии</span></div>
+          <div class="stat"><strong>06</strong><span>коротких уроков</span></div>
+          <div class="stat"><strong>∞</strong><span>идей для проектов</span></div>
         </div>
       </div>
-      <div id="hint" class="hint hidden"></div>
-      <h3>Что получилось?</h3>
-      <iframe id="preview" title="Результат твоего кода" sandbox="allow-scripts"></iframe>
-      <div class="footer-actions">
-        <button class="btn secondary" onclick="prevLesson()">← Назад</button>
-        <button class="btn primary" id="completeBtn" onclick="completeLesson()">Урок пройден ✓</button>
-        <button class="btn secondary" onclick="nextLesson()">Далее →</button>
+      <div class="preview" aria-label="Пример кода и результата">
+        <div class="window-top">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <span class="window-label">codestart / your-first-page.html</span>
+          <span class="tag">LIVE</span>
+        </div>
+        <div class="fake-code">
+          <div><span class="code-purple">&lt;h1&gt;</span><span class="code-pink">Привет, мир!</span><span class="code-purple">&lt;/h1&gt;</span></div>
+          <div><span class="code-purple">&lt;p&gt;</span>Я учусь создавать сайты.<span class="code-purple">&lt;/p&gt;</span></div>
+          <div><span class="code-purple">&lt;button&gt;</span><span class="code-yellow">Поехали!</span><span class="code-purple">&lt;/button&gt;</span></div>
+          <div><span class="code-green">// Твоя идея. Твой код.</span></div>
+        </div>
+        <div class="preview-result">
+          <strong>Привет, мир! ✨</strong>
+          <p>Каждый большой проект начинается с первой строки кода.</p>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div id="projectView" class="hidden">
-      <span class="pill">ПРАКТИКА</span>
-      <h2 id="projectTitle"></h2>
-      <p id="projectDesc"></p>
-      <div id="projectSteps"></div>
-      <button class="btn primary" onclick="backToLessons()">← Вернуться к урокам</button>
-    </div>
-
-    <section class="assistant">
-      <div class="assistant-title"><span>✳</span> Помощник CodeStart</div>
-      <p class="muted">Спроси, если что-то непонятно. Объясню простыми словами.</p>
-      <div id="chat">
-        <div class="bubble">Привет! 👋 Я помогу разобраться в HTML, CSS и JavaScript. Пока я работаю на основе встроенных объяснений, а не подключённого ИИ.</div>
+  <section id="lessons">
+    <div class="wrap">
+      <div class="section-heading">
+        <div class="kicker">01 / Учись на практике</div>
+        <h2>Твой путь в разработку</h2>
+        <p>Выбирай урок, читай объяснение и сразу пробуй сам.</p>
       </div>
-      <form id="chatForm">
-        <input id="question" placeholder="Например: что такое HTML?" autocomplete="off">
-        <button class="btn primary" type="submit">Спросить</button>
-      </form>
-      <p class="small">Это учебный помощник с готовыми ответами. Настоящий ИИ подключим отдельно, когда основа сайта будет готова.</p>
-    </section>
+
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Твой прогресс</span><span id="progressText">0 из 6 уроков</span></div>
+        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+
+      <div class="lesson-layout">
+        <aside class="lesson-list" aria-label="Список уроков">
+          <div class="lesson-list-title">Программа обучения</div>
+          <button class="lesson-choice active" data-lesson="0"><span class="lesson-number">01</span><span>Знакомство с HTML</span></button>
+          <button class="lesson-choice" data-lesson="1"><span class="lesson-number">02</span><span>Заголовки и текст</span></button>
+          <button class="lesson-choice" data-lesson="2"><span class="lesson-number">03</span><span>Красивый CSS</span></button>
+          <button class="lesson-choice" data-lesson="3"><span class="lesson-number">04</span><span>Кнопки и события</span></button>
+          <button class="lesson-choice" data-lesson="4"><span class="lesson-number">05</span><span>Переменные JS</span></button>
+          <button class="lesson-choice" data-lesson="5"><span class="lesson-number">06</span><span>Твой мини-сайт</span></button>
+        </aside>
+
+        <article class="lesson-content">
+          <div class="lesson-top">
+            <span class="tag" id="lessonTag">УРОК 01 · HTML</span>
+            <span class="tag" id="lessonTime">5 минут</span>
+          </div>
+          <h3 id="lessonTitle">Начинаем с HTML</h3>
+          <p id="lessonDescription">HTML задаёт структуру страницы: заголовки, абзацы, изображения и кнопки.</p>
+          <div class="tip" id="lessonTip">💡 Подсказка: HTML — это скелет сайта. CSS отвечает за внешний вид, а JavaScript — за действия.</div>
+          <h4>Что нужно знать</h4>
+          <ul id="lessonPoints">
+            <li>Теги описывают элементы страницы.</li>
+            <li>Большинство тегов имеют открывающую и закрывающую части.</li>
+            <li>Можно менять код и смотреть результат в редакторе ниже.</li>
+          </ul>
+          <div class="lesson-actions">
+            <button class="btn btn-primary" id="completeLesson">✓ Отметить пройденным</button>
+            <button class="btn" id="hintButton">💡 Подсказка</button>
+            <button class="btn" id="nextLesson">Следующий урок →</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="editor">
+    <div class="wrap">
+      <div class="section-heading">
+        <div class="kicker">02 / Твоя лаборатория</div>
+        <h2>Пиши. Запускай. Создавай.</h2>
+        <p>Измени пример кода и нажми «Запустить». Результат появится справа.</p>
+      </div>
+      <div class="editor-grid">
+        <div class="editor-box">
+          <div class="editor-head"><span>✦ Редактор HTML</span><span>index.html</span></div>
+          <textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Редактор HTML" wrap="off"><!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4eaff;
+      padding: 24px;
+      text-align: center;
+    }
+    h1 { color: #7c3aed; }
+    button {
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 10px;
+      background: #7c3aed;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Мой первый сайт ✨</h1>
+  <p>Я учусь программировать!</p>
+  <button onclick="alert('У меня получилось!')">
+    Нажми меня
+  </button>
+</body>
+</html></textarea>
+          <div class="editor-footer">
+            <span class="editor-note">Можно менять текст и стили</span>
+            <button class="btn btn-primary btn-small" id="runCode">▶ Запустить код</button>
+          </div>
+        </div>
+        <div class="editor-box">
+          <div class="editor-head"><span>◉ Результат</span><span class="status" id="runStatus">Готов к запуску</span></div>
+          <iframe id="previewFrame" title="Результат твоего HTML-кода" sandbox="allow-scripts allow-modals"></iframe>
+          <div class="editor-footer">
+            <span class="editor-note">Изменения видны после запуска</span>
+            <button class="btn btn-small" id="resetCode">Сбросить пример ↺</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-heading">
+        <div class="kicker">03 / Прокачай навыки</div>
+        <h2>Что можно создать?</h2>
+        <p>Выбери идею для следующего проекта.</p>
+      </div>
+      <div class="projects">
+        <article class="project-card">
+          <div class="emoji">🧮</div><h3>Мини-калькулятор</h3>
+          <p>Научись принимать числа, выполнять операции и выводить результат.</p>
+          <button class="btn btn-small project-button" data-project="calc">Изучить идею →</button>
+        </article>
+        <article class="project-card">
+          <div class="emoji">📝</div><h3>Список задач</h3>
+          <p>Добавляй задачи, отмечай выполненные и тренируй работу с событиями.</p>
+          <button class="btn btn-small project-button" data-project="todo">Изучить идею →</button>
+        </article>
+        <article class="project-card">
+          <div class="emoji">🎯</div><h3>Угадай число</h3>
+          <p>Создай игру с условиями, случайными числами и счётчиком попыток.</p>
+          <button class="btn btn-small project-button" data-project="guess">Изучить идею →</button>
+        </article>
+      </div>
+      <div class="tip" id="projectDetails" hidden></div>
+    </div>
+  </section>
+
+  <section id="helper">
+    <div class="wrap">
+      <div class="section-heading">
+        <div class="kicker">04 / Не застревай</div>
+        <h2>Помощник CodeStart</h2>
+        <p>Задай вопрос по HTML, CSS или JavaScript.</p>
+      </div>
+      <div class="help-box">
+        <strong>💜 Привет! Чем помочь?</strong>
+        <div class="chat-messages" id="chatMessages" aria-live="polite">
+          <div class="chat-msg">Я учебный помощник с готовыми объяснениями. Спроси, например: «Что такое HTML?» или «Как изменить цвет?»</div>
+        </div>
+        <form class="chat-form" id="chatForm">
+          <input id="chatInput" type="text" maxlength="300" placeholder="Например: как сделать кнопку?" aria-label="Твой вопрос">
+          <button class="btn btn-primary" type="submit">Отправить</button>
+        </form>
+        <p class="editor-note">Это простой встроенный помощник, не подключённый к ИИ. Он отвечает на несколько популярных вопросов.</p>
+      </div>
+    </div>
   </section>
 </main>
-<footer>CodeStart · Маленькие шаги — большие результаты 💙</footer>
+
+<footer>
+  <div class="wrap footer-inner">
+    <a class="logo" href="#home"><span class="logo-icon">&lt;/&gt;</span><span>Code<span>Start</span></span></a>
+    <span>Создано, чтобы твои идеи стали кодом. 💜</span>
+    <span>© <span id="year"></span> CodeStart</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-// Каждый урок содержит объяснение, пример кода и подсказку.
-const lessons = [
-  {
-    title:"Что такое HTML?",
-    tag:"УРОК 1 · HTML",
-    desc:"HTML — это основа страницы. Он помогает добавить на сайт заголовки, текст, картинки и кнопки.",
-    analogy:"Представь дом. HTML — это стены и комнаты. Он определяет, что вообще будет на странице.",
-    code:"<h1>Привет, мир!</h1>\n<p>Я учусь программировать.</p>",
-    hint:"Измени текст между <h1> и </h1>. Это главный заголовок страницы.",
-    answer:"HTML — это язык разметки. Он задаёт структуру страницы: заголовки, абзацы, картинки и другие элементы."
-  },
-  {
-    title:"Заголовки и абзацы",
-    tag:"УРОК 2 · HTML",
-    desc:"Заголовки выделяют важные названия, а абзацы содержат обычный текст.",
-    analogy:"Как в книге: название книги, названия глав и текст внутри главы.",
-    code:"<h1>Мой сайт</h1>\n<h2>Обо мне</h2>\n<p>Меня зовут будущий программист!</p>",
-    hint:"Добавь ещё один абзац: <p>Я учусь каждый день.</p>",
-    answer:"Тег h1 — главный заголовок, h2 — заголовок раздела, p — абзац. Большинство тегов нужно закрывать."
-  },
-  {
-    title:"Что такое CSS?",
-    tag:"УРОК 3 · CSS",
-    desc:"CSS отвечает за внешний вид: цвета, размеры, шрифты и расстояния между элементами.",
-    analogy:"Если HTML — стены дома, то CSS — краска, обои и украшения.",
-    code:"<h1>Красивый сайт</h1>\n<p>Я изучаю CSS.</p>\n<style>\n  body { background: #eaf0ff; }\n  h1 { color: royalblue; }\n</style>",
-    hint:"Замени royalblue на red. Цвет заголовка изменится.",
-    answer:"CSS задаёт внешний вид элементов. Внутри фигурных скобок пишут свойства и их значения, например color: red."
-  },
-  {
-    title:"Карточки и отступы",
-    tag:"УРОК 4 · CSS",
-    desc:"С помощью CSS можно создавать карточки, добавлять фон и свободное место вокруг текста.",
-    analogy:"Карточка похожа на красивую рамку вокруг информации. Отступы не дают тексту прилипать к краям.",
-    code:"<div class='card'>\n  <h2>Моя карточка</h2>\n  <p>Мой первый дизайн!</p>\n</div>\n<style>\n  .card {\n    background: #e5edff;\n    padding: 20px;\n    border-radius: 16px;\n  }\n</style>",
-    hint:"Поменяй padding: 20px на padding: 40px. Внутри карточки появится больше свободного места.",
-    answer:"padding — расстояние внутри элемента. border-radius скругляет углы. Точка перед card выбирает класс card."
-  },
-  {
-    title:"Что такое JavaScript?",
-    tag:"УРОК 5 · JAVASCRIPT",
-    desc:"JavaScript помогает сайту реагировать на действия: нажатия, ввод текста и многое другое.",
-    analogy:"HTML — корпус робота, CSS — его внешний вид, а JavaScript — команды, которые он выполняет.",
-    code:"<button onclick='hello()'>Нажми меня</button>\n<p id='result'>Здесь появится ответ.</p>\n<script>\nfunction hello() {\n  document.getElementById('result').textContent = 'Получилось!';\n}\n</script>",
-    hint:"Измени текст 'Получилось!' внутри кавычек. Затем нажми кнопку в окне результата.",
-    answer:"JavaScript — язык программирования. Он позволяет выполнять действия. Функция — это набор команд, который можно запустить."
-  },
-  {
-    title:"Переменные и числа",
-    tag:"УРОК 6 · JAVASCRIPT",
-    desc:"Переменная — это именованное место, где программа хранит информацию, например число или текст.",
-    analogy:"Представь коробку с наклейкой «очки». Положи в неё число, а потом используй его в программе.",
-    code:"<p id='result'></p>\n<script>\nlet score = 10;\nscore = score + 5;\ndocument.getElementById('result').textContent = 'Очки: ' + score;\n</script>",
-    hint:"Поменяй 10 на другое число. Посмотри, как изменится результат.",
-    answer:"let создаёт переменную. Здесь score хранит число 10, а затем к нему прибавляется 5."
+(function () {
+  "use strict";
+
+  const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+  const lessonData = [
+    {
+      tag: "УРОК 01 · HTML", time: "5 минут",
+      title: "Начинаем с HTML",
+      description: "HTML задаёт структуру страницы: заголовки, абзацы, изображения и кнопки.",
+      tip: "💡 HTML — скелет сайта. CSS отвечает за внешний вид, а JavaScript — за действия.",
+      points: [
+        "Теги описывают элементы страницы.",
+        "Многие теги имеют открывающую и закрывающую части.",
+        "Меняй код в редакторе ниже и смотри результат."
+      ],
+      hint: "Попробуй изменить текст внутри тега h1 в редакторе, затем нажми «Запустить код»."
+    },
+    {
+      tag: "УРОК 02 · HTML", time: "6 минут",
+      title: "Заголовки и текст",
+      description: "Заголовки помогают организовать информацию, а абзацы делают текст удобным для чтения.",
+      tip: "💡 h1 — главный заголовок страницы. p — абзац. Не забывай закрывать теги.",
+      points: [
+        "Для главного заголовка используй h1.",
+        "Для обычного текста используй p.",
+        "Можно добавить несколько заголовков разных уровней."
+      ],
+      hint: "Добавь ещё один абзац: <p>Я делаю свой сайт!</p> — и запусти код."
+    },
+    {
+      tag: "УРОК 03 · CSS", time: "7 минут",
+      title: "Добавляем стиль с CSS",
+      description: "CSS меняет цвета, размеры, отступы, рамки и расположение элементов.",
+      tip: "💡 Найди в примере color и background. Поменяй значения, чтобы увидеть разницу.",
+      points: [
+        "color задаёт цвет текста.",
+        "background задаёт фон.",
+        "padding добавляет внутренний отступ."
+      ],
+      hint: "Найди в редакторе строку color: #7c3aed; и попробуй заменить цвет."
+    },
+    {
+      tag: "УРОК 04 · JAVASCRIPT", time: "8 минут",
+      title: "Кнопки и события",
+      description: "JavaScript позволяет странице реагировать на действия пользователя.",
+      tip: "💡 В примере уже есть onclick. Нажми кнопку в окне результата и посмотри, что произойдёт.",
+      points: [
+        "JavaScript добавляет интерактивность.",
+        "Событие click возникает при нажатии.",
+        "Можно показывать сообщения и изменять страницу."
+      ],
+      hint: "Найди onclick в примере. Внутри него находится действие при нажатии."
+    },
+    {
+      tag: "УРОК 05 · JAVASCRIPT", time: "8 минут",
+      title: "Переменные",
+      description: "Переменная хранит значение, которое можно использовать в программе.",
+      tip: "💡 В JavaScript для создания переменных часто используют const и let.",
+      points: [
+        "const создаёт переменную, которую нельзя переназначить.",
+        "let позволяет присвоить переменной новое значение.",
+        "Текстовые значения обычно записывают в кавычках."
+      ],
+      hint: "Пример: const nickname = 'Coder'; — переменная nickname хранит текст Coder."
+    },
+    {
+      tag: "УРОК 06 · ПРАКТИКА", time: "10 минут",
+      title: "Создай свой мини-сайт",
+      description: "Объедини HTML, CSS и JavaScript: придумай заголовок, оформи страницу и добавь работающую кнопку.",
+      tip: "💡 Начни с маленького проекта. Сначала структура, потом стиль, затем действия.",
+      points: [
+        "Добавь заголовок и описание.",
+        "Настрой цвета и отступы в CSS.",
+        "Добавь кнопку с событием onclick."
+      ],
+      hint: "Сделай персональную страницу: имя или ник, любимое занятие и кнопку с приветствием."
+    }
+  ];
+
+  const starterCode = $("#codeEditor").value;
+  let currentLesson = 0;
+  let toastTimer;
+
+  function showToast(message) {
+    const toast = $("#toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
   }
-];
 
-const projects = [
-  {
-    title:"🧮 Калькулятор",
-    desc:"Сделаем страницу, которая складывает два числа. Каждый шаг добавляет одну часть проекта.",
-    steps:[
-      ["Шаг 1. Создаём поля","Поля позволяют человеку вводить числа.","<input type='number' placeholder='Первое число'>"],
-      ["Шаг 2. Добавляем кнопку","Кнопка будет запускать вычисление.","<button>Сложить</button>"],
-      ["Шаг 3. Считаем результат","JavaScript получает числа, складывает их и показывает ответ.","let result = Number(a) + Number(b);"]
-    ]
-  },
-  {
-    title:"✅ Список дел",
-    desc:"Научимся записывать задачи на странице и отмечать то, что уже сделано.",
-    steps:[
-      ["Шаг 1. Поле ввода","Сюда человек напишет задачу.","<input placeholder='Что нужно сделать?'>"],
-      ["Шаг 2. Кнопка","По нажатию добавим новую задачу.","<button>Добавить</button>"],
-      ["Шаг 3. Список","Каждая задача станет отдельным пунктом.","<ul><li>Выучить HTML</li></ul>"]
-    ]
-  },
-  {
-    title:"🎯 Угадай число",
-    desc:"Создадим игру, в которой нужно угадать число, загаданное компьютером.",
-    steps:[
-      ["Шаг 1. Загадываем число","Переменная будет хранить правильный ответ.","let secret = 7;"],
-      ["Шаг 2. Вводим ответ","Игрок вводит своё предположение.","<input type='number'>"],
-      ["Шаг 3. Проверяем","Условие помогает программе понять, угадал ли игрок.","if (guess === secret) { /* победа */ }"]
-    ]
+  function getCompleted() {
+    try {
+      const value = JSON.parse(localStorage.getItem("codestart-completed") || "[]");
+      return Array.isArray(value) ? value.filter(n => Number.isInteger(n) && n >= 0 && n < lessonData.length) : [];
+    } catch (error) {
+      return [];
+    }
   }
-];
 
-// Загружаем список пройденных уроков из памяти браузера.
-let current = 0;
-let done = JSON.parse(localStorage.getItem("codestart_done") || "[]");
-let originalCode = "";
-const $ = id => document.getElementById(id);
+  function saveCompleted(items) {
+    try {
+      localStorage.setItem("codestart-completed", JSON.stringify(items));
+    } catch (error) {
+      showToast("Прогресс не сохранился в браузере, но урок работает.");
+    }
+  }
 
-function renderLessons() {
-  $("lessonList").innerHTML = lessons.map((l, i) =>
-    `<button class="lesson-link ${i === current ? "active" : ""} ${done.includes(i) ? "done" : ""}" onclick="selectLesson(${i})">${done.includes(i) ? "✓ " : ""}${i+1}. ${l.title}</button>`
-  ).join("");
-  $("progressText").textContent = `${done.length} из ${lessons.length} уроков`;
-  $("progressBar").style.width = `${done.length / lessons.length * 100}%`;
-}
+  function updateProgress() {
+    const completed = getCompleted();
+    $("#progressText").textContent = completed.length + " из " + lessonData.length + " уроков";
+    $("#progressBar").style.width = (completed.length / lessonData.length * 100) + "%";
 
-function selectLesson(i) {
-  current = i;
-  $("lessonView").classList.remove("hidden");
-  $("projectView").classList.add("hidden");
-  const l = lessons[i];
-  $("lessonTag").textContent = l.tag;
-  $("lessonTitle").textContent = l.title;
-  $("lessonDesc").textContent = l.desc;
-  $("lessonAnalogy").textContent = l.analogy;
-  $("code").value = l.code;
-  originalCode = l.code;
-  $("hint").classList.add("hidden");
-  $("completeBtn").textContent = done.includes(i) ? "Урок пройден ✓" : "Урок пройден ✓";
-  renderLessons();
-  runCode();
-}
+    $$(".lesson-choice").forEach((button, index) => {
+      const done = completed.includes(index);
+      button.classList.toggle("done", done);
+      const number = button.querySelector(".lesson-number");
+      number.textContent = done ? "✓" : String(index + 1).padStart(2, "0");
+    });
 
-function runCode() {
-  // Результат показываем в отдельном окне, а не на самой странице обучения.
-  $("preview").srcdoc = $("code").value;
-}
-function resetCode() {
-  $("code").value = originalCode;
-  runCode();
-  $("hint").classList.add("hidden");
-}
-function showHint() {
-  $("hint").textContent = lessons[current].hint;
-  $("hint").classList.remove("hidden");
-}
-function completeLesson() {
-  if (!done.includes(current)) done.push(current);
-  localStorage.setItem("codestart_done", JSON.stringify(done));
-  renderLessons();
-  $("completeBtn").textContent = "Сохранено ✓";
-}
-function nextLesson() { selectLesson(Math.min(current + 1, lessons.length - 1)); }
-function prevLesson() { selectLesson(Math.max(current - 1, 0)); }
+    const isDone = completed.includes(currentLesson);
+    $("#completeLesson").textContent = isDone ? "✓ Урок пройден" : "✓ Отметить пройденным";
+    $("#completeLesson").classList.toggle("btn-primary", !isDone);
+  }
 
-function openProject(i) {
-  $("lessonView").classList.add("hidden");
-  $("projectView").classList.remove("hidden");
-  $("projectTitle").textContent = projects[i].title;
-  $("projectDesc").textContent = projects[i].desc;
-  $("projectSteps").innerHTML = projects[i].steps.map(s =>
-    `<div class="step"><b>${s[0]}</b><p>${s[1]}</p><pre></pre></div>`
-  ).join("");
-  [...$("projectSteps").querySelectorAll("pre")].forEach((el, n) => {
-    el.textContent = projects[i].steps[n][2];
+  function renderLesson(index) {
+    if (index < 0 || index >= lessonData.length) return;
+    currentLesson = index;
+    const lesson = lessonData[index];
+    $("#lessonTag").textContent = lesson.tag;
+    $("#lessonTime").textContent = lesson.time;
+    $("#lessonTitle").textContent = lesson.title;
+    $("#lessonDescription").textContent = lesson.description;
+    $("#lessonTip").textContent = lesson.tip;
+
+    const list = $("#lessonPoints");
+    list.replaceChildren();
+    lesson.points.forEach(point => {
+      const li = document.createElement("li");
+      li.textContent = point;
+      list.appendChild(li);
+    });
+
+    $$(".lesson-choice").forEach((button, i) => {
+      button.classList.toggle("active", i === index);
+      if (i === index) button.setAttribute("aria-current", "step");
+      else button.removeAttribute("aria-current");
+    });
+
+    $("#hintButton").textContent = "💡 Подсказка";
+    updateProgress();
+  }
+
+  function runCode() {
+    const code = $("#codeEditor").value;
+    const frame = $("#previewFrame");
+    try {
+      frame.srcdoc = code;
+      $("#runStatus").textContent = "Код запущен ✓";
+      showToast("Готово! Результат обновлён 🚀");
+    } catch (error) {
+      $("#runStatus").textContent = "Ошибка запуска";
+      showToast("Не удалось запустить код. Проверь его и попробуй ещё раз.");
+    }
+  }
+
+  $("#year").textContent = new Date().getFullYear();
+
+  $("#navStart").addEventListener("click", () => {
+    $("#lessons").scrollIntoView({ behavior: "smooth" });
   });
-}
-function backToLessons() {
-  $("projectView").classList.add("hidden");
-  $("lessonView").classList.remove("hidden");
-}
+  $("#heroStart").addEventListener("click", () => {
+    $("#lessons").scrollIntoView({ behavior: "smooth" });
+  });
+  $("#heroProjects").addEventListener("click", () => {
+    $("#projects").scrollIntoView({ behavior: "smooth" });
+  });
 
-// Учебный помощник: ответы на частые вопросы новичков.
-function ask(question) {
-  const q = question.toLowerCase();
-  let answer = "Попробуй уточнить вопрос. Пока я лучше всего отвечаю на вопросы про HTML, CSS, JavaScript, ошибки и запуск кода.";
-  if (q.includes("html")) answer = lessons[0].answer;
-  else if (q.includes("css") || q.includes("цвет") || q.includes("дизайн")) answer = lessons[2].answer;
-  else if (q.includes("javascript") || q.includes(" js") || q.includes("функци")) answer = lessons[4].answer;
-  else if (q.includes("переменн") || q.includes("числ")) answer = lessons[5].answer;
-  else if (q.includes("ошиб") || q.includes("не работает")) answer = "Не паникуй! Проверь: 1) закрыты ли кавычки; 2) есть ли закрывающие теги; 3) нажал ли ты «Запустить». Если не помогло, пришли мне свой код — разберём вместе.";
-  else if (q.includes("запустить") || q.includes("результат")) answer = "Напиши код в тёмном редакторе и нажми синюю кнопку «Запустить». Результат появится ниже, в белом окне.";
-  else if (q.includes("начать") || q.includes("учить")) answer = "Начни с первого урока HTML. Измени текст в примере, нажми «Запустить» и посмотри, что поменялось. Не нужно учить всё за один день!";
-  $("chat").innerHTML += `<div class="bubble user"></div><div class="bubble"></div>`;
-  const bubbles = $("chat").querySelectorAll(".bubble");
-  bubbles[bubbles.length - 2].textContent = question;
-  bubbles[bubbles.length - 1].textContent = answer;
-  $("question").value = "";
-}
-$("chatForm").addEventListener("submit", e => {
-  e.preventDefault();
-  const q = $("question").value.trim();
-  if (q) ask(q);
-});
+  $$(".lesson-choice").forEach(button => {
+    button.addEventListener("click", () => {
+      renderLesson(Number(button.dataset.lesson));
+    });
+  });
 
-selectLesson(0);
+  $("#completeLesson").addEventListener("click", () => {
+    const completed = getCompleted();
+    if (completed.includes(currentLesson)) {
+      showToast("Этот урок уже отмечен как пройденный 💜");
+      return;
+    }
+    completed.push(currentLesson);
+    saveCompleted(completed);
+    updateProgress();
+    showToast("Урок пройден! Отличная работа 🎉");
+  });
+
+  $("#hintButton").addEventListener("click", () => {
+    showToast(lessonData[currentLesson].hint);
+  });
+
+  $("#nextLesson").addEventListener("click", () => {
+    const next = (currentLesson + 1) % lessonData.length;
+    renderLesson(next);
+    $("#lessonTitle").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  $("#runCode").addEventListener("click", runCode);
+  $("#resetCode").addEventListener("click", () => {
+    $("#codeEditor").value = starterCode;
+    runCode();
+    showToast("Пример восстановлен.");
+  });
+
+  const projectInfo = {
+    calc: "🧮 Калькулятор: создай два поля для чисел, кнопки сложения и вычитания и место для вывода результата. Потренируйся читать значения из полей.",
+    todo: "📝 Список задач: добавь поле ввода, кнопку добавления и список. Каждая новая задача должна появляться в списке. Можно добавить кнопку удаления.",
+    guess: "🎯 Угадай число: программа выбирает случайное число, игрок вводит свой вариант, а сайт подсказывает — больше или меньше."
+  };
+
+  $$(".project-button").forEach(button => {
+    button.addEventListener("click", () => {
+      const details = $("#projectDetails");
+      details.textContent = projectInfo[button.dataset.project] || "Выбери другой проект.";
+      details.hidden = false;
+      details.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+
+  function answerQuestion(question) {
+    const q = question.toLowerCase();
+
+    if (q.includes("html") || q.includes("тег")) {
+      return "HTML — язык разметки. Он задаёт структуру страницы. Например, <h1>Заголовок</h1> создаёт заголовок. Попробуй изменить пример в редакторе!";
+    }
+    if (q.includes("цвет") || q.includes("css") || q.includes("стил")) {
+      return "За внешний вид отвечает CSS. Свойство color меняет цвет текста, background — фон, а padding — внутренние отступы. В редакторе найди блок style.";
+    }
+    if (q.includes("кноп") || q.includes("нажат") || q.includes("click")) {
+      return "Кнопку можно создать тегом button. Для реакции на нажатие в простом примере можно использовать onclick, например: onclick=\"alert('Привет!')\".";
+    }
+    if (q.includes("перемен") || q.includes("javascript") || q.includes("js")) {
+      return "JavaScript добавляет действия на страницу. Например, const name = 'Coder'; создаёт переменную name со значением Coder. const — для значения, которое не нужно переназначать.";
+    }
+    if (q.includes("ошиб") || q.includes("не работает")) {
+      return "Проверь, правильно ли написаны теги и кавычки. После изменений снова нажми «Запустить код». Если не помогло, пришли текст ошибки и часть кода.";
+    }
+    if (q.includes("привет") || q.includes("здравств")) {
+      return "Привет, будущий разработчик! 💜 Начни с HTML, затем добавь CSS и попробуй JavaScript. Маленькие шаги — тоже прогресс.";
+    }
+    return "Пока я знаю не все ответы, но могу помочь с HTML, CSS, кнопками и основами JavaScript. Попробуй спросить: «Как изменить цвет?»";
+  }
+
+  function addMessage(text, isUser) {
+    const msg = document.createElement("div");
+    msg.className = "chat-msg" + (isUser ? " user" : "");
+    msg.textContent = text;
+    $("#chatMessages").appendChild(msg);
+    $("#chatMessages").scrollTop = $("#chatMessages").scrollHeight;
+  }
+
+  $("#chatForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const input = $("#chatInput");
+    const question = input.value.trim();
+    if (!question) {
+      showToast("Напиши вопрос сначала 🙂");
+      return;
+    }
+    addMessage(question, true);
+    input.value = "";
+    addMessage(answerQuestion(question), false);
+  });
+
+  renderLesson(0);
+  runCode();
+})();
 </script>
 </body>
 </html>
-
